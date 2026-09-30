@@ -8,10 +8,9 @@
 - 편집일: 2026-10-01 / 버전: 1.0.0
 - 수록: 직접 소관 6개 + 공동·연계 3개, 총 69개 업무단계
 - 저장소: `roknnaoms-hub/defense-institution-map`
-- Pages 활성화 후 서비스 주소: `https://roknnaoms-hub.github.io/defense-institution-map/`
-- 현재 상태: 대시보드·데이터·소스 업로드 완료. GitHub Pages 활성화 대기.
-- 남은 설정: Settings → Pages → Deploy from a branch → `main` / `(root)` → Save.
-- 이 저장소에는 Actions 배포 workflow를 올리지 않았으며 브랜치 게시 방식을 사용합니다.
+- 서비스 주소: https://roknnaoms-hub.github.io/defense-institution-map/
+- 현재 상태: GitHub Pages 게시 완료. 2026-10-01 공개 주소 HTTP 200 및 검증된 대시보드 파일과의 일치를 확인했습니다.
+- 배포 방식: `main` 브랜치의 루트(`/`)에서 자동 게시합니다.
 
 ## 실행
 
@@ -44,14 +43,14 @@
 
 ## GitHub Pages 운영
 
-저장소와 Pages 설정은 계정 권한이 있는 상태에서 실행합니다. 다음 두 방식 중 하나만 선택합니다.
+이 저장소는 Settings → Pages → Deploy from a branch → `main` / `(root)` 설정으로 운영합니다.
 
-1. `defense-institution-map` 공개 저장소를 생성하고 파일을 `main`에 올립니다.
-2. 간단한 방식: Settings → Pages → Deploy from a branch → `main` / `(root)` → Save. 이 경우 제공된 `.github/workflows/pages.yml`은 업로드하지 않습니다.
-3. Actions 방식: Settings → Pages → Source를 GitHub Actions로 설정합니다. 제공된 workflow를 포함하여 올린 뒤 Actions에서 실행 결과를 확인합니다.
-4. 서비스 주소에 접속해 검색·상세보기와 모바일 화면을 확인한 뒤 게시 완료를 판단합니다.
+1. `data/institutions.json` 또는 `template.html`을 수정합니다.
+2. `python tools/build.py`로 `index.html`을 재생성하고 검증합니다.
+3. 변경 파일을 `main`에 올리면 GitHub Pages가 자동으로 다시 배포합니다.
+4. Actions의 `pages build and deployment` 결과와 공개 서비스 주소를 확인합니다.
 
-기존 저장소나 다른 사이트 파일을 덮어쓰지 않고 새 저장소에 배포하도록 준비했습니다.
+현재 저장소에는 별도 Actions 배포 workflow가 필요하지 않습니다.
 
 ## 편집과 재생성
 
