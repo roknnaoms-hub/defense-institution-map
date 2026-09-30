@@ -8,8 +8,10 @@
 - 편집일: 2026-10-01 / 버전: 1.0.0
 - 수록: 직접 소관 6개 + 공동·연계 3개, 총 69개 업무단계
 - 저장소: `roknnaoms-hub/defense-institution-map`
-- 서비스 주소: `https://roknnaoms-hub.github.io/defense-institution-map/`
-- 게시 방식: `main` 브랜치 루트를 GitHub Pages로 서비스합니다.
+- Pages 활성화 후 서비스 주소: `https://roknnaoms-hub.github.io/defense-institution-map/`
+- 현재 상태: 대시보드·데이터·소스 업로드 완료. GitHub Pages 활성화 대기.
+- 남은 설정: Settings → Pages → Deploy from a branch → `main` / `(root)` → Save.
+- 이 저장소에는 Actions 배포 workflow를 올리지 않았으며 브랜치 게시 방식을 사용합니다.
 
 ## 실행
 
