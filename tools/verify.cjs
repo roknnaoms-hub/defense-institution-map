@@ -9,7 +9,7 @@ const path=require('path');
  await page.addInitScript(()=>{addEventListener('securitypolicyviolation',e=>window.recordCspViolation(e.effectiveDirective));});
  const url='file://'+path.resolve(__dirname,'../index.html');
  const check=(v,msg)=>{if(!v)throw Error(msg)};
- await page.goto(url);await page.evaluate(()=>document.fonts.ready);check(await page.locator('.card').count()===9,'9 institutions');
+ await page.goto(url);await page.evaluate(()=>document.fonts.ready);await page.click('[data-view="map"]');check(await page.locator('.card').count()===9,'9 institutions');
  await page.selectOption('#owner','국방부');check(await page.locator('.card').count()===4,'MND direct 4');
  await page.selectOption('#owner','방위사업청');check(await page.locator('.card').count()===2,'DAPA direct 2');
  await page.selectOption('#owner','공동·연계');check(await page.locator('.card').count()===3,'related 3');
@@ -21,7 +21,7 @@ const path=require('path');
  await page.click('[data-view="compare"]');check(await page.locator('.compare-table thead th').count()===4,'three comparison columns');
  await page.click('#clearCompare');await page.click('[data-view="map"]');
  await page.click('[data-fav="D01"]');await page.click('#favOnly');check(await page.locator('.card').count()===1,'favorites filter');
- await page.reload();check(await page.locator('[data-fav="D01"]').getAttribute('aria-pressed')==='true','favorites persistence');
+ await page.reload();await page.click('[data-view="map"]');check(await page.locator('[data-fav="D01"]').getAttribute('aria-pressed')==='true','favorites persistence');
  for(let k=1;k<=9;k++){
   const id='D'+String(k).padStart(2,'0');await page.locator(`[data-open="${id}"]`).first().click();
   for(const tab of ['flow','legal','checks','overview']){await page.click(`[data-detail-tab="${tab}"]`);check((await page.locator('#detailContent').innerText()).length>50,id+' '+tab);}

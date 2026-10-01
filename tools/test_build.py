@@ -4,7 +4,7 @@ import json
 import re
 import unittest
 from html.parser import HTMLParser
-from build import ROOT, csp_hash, embedded_json, validate_data, validate_url
+from build import ROOT, csp_hash, embedded_json, validate_data, validate_url, validate_ontology
 
 
 class BuildSecurityTests(unittest.TestCase):
@@ -33,6 +33,19 @@ class BuildSecurityTests(unittest.TestCase):
             if change == 'edge': edited['items'][0]['edges'][0]['source'] = 'MISSING'
             if change == 'relationship': edited['meta']['relationships'][0]['target'] = 'D99'
             with self.assertRaises(ValueError): validate_data(edited)
+
+    def test_ontology_guards(self):
+        graph = json.loads((ROOT / 'data/ontology.json').read_text())
+        validate_ontology(graph)
+        for change in ['endpoint', 'domain', 'provenance', 'url', 'id', 'route']:
+            edited = copy.deepcopy(graph)
+            if change == 'endpoint': edited['edges'][0]['source'] = 'missing'
+            if change == 'domain': edited['edges'][0]['target'] = 'program-ax'
+            if change == 'provenance': edited['edges'][0]['sources'] = []
+            if change == 'url': edited['sources'][0]['url'] = 'javascript:alert(1)'
+            if change == 'id': edited['nodes'][0]['id'] = edited['nodes'][1]['id']
+            if change == 'route': edited['routes'][0]['nodes'][0] = 'program-ax'
+            with self.assertRaises(ValueError): validate_ontology(edited)
 
     def test_hashes_and_attributes(self):
         html = (ROOT / 'index.html').read_text()

@@ -22,7 +22,7 @@ const server=http.createServer((req,res)=>{
    Object.defineProperty(navigator,'clipboard',{value:{writeText:async text=>{window.copied=text;}}});
   });
   await page.goto(origin+'/?private_query=do-not-share');
-  await page.evaluate(()=>document.fonts.ready);
+  await page.evaluate(()=>document.fonts.ready);await page.click('[data-view="map"]');
   assert.equal(await page.locator('.card').count(),9);
   assert.deepEqual(await page.evaluate(()=>window.violations),[]);
   assert.equal(hits.length,1,'No automatic network resources');
@@ -50,7 +50,7 @@ const server=http.createServer((req,res)=>{
   assert.ok(cells.slice(0,6).every(x=>x.startsWith('"\'')));
   assert.equal(cells[6],'"normal"');assert.equal(cells[7],'"a""b"');
   await page.evaluate(()=>{localStorage.setItem('defense-atlas-favs-v1','x'.repeat(5000));});
-  await page.reload();assert.equal(await page.locator('.card').count(),9);
+  await page.reload();await page.click('[data-view="map"]');assert.equal(await page.locator('.card').count(),9);
   await page.evaluate(()=>{
    ITEMS[0].title='<img src=x onerror="window.injected=true">';
    ITEMS[0].scope='<svg onload="window.injected=true">';

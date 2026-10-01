@@ -1,11 +1,11 @@
-# 국방·방위사업 제도 지도
+# 국방·방위사업 온톨로지 지식지도
 
 국방부·방위사업청 관련 제도를 담당기관, 법적 근거, 절차, 문서와 연결하는 정적 대시보드입니다.
 
 - 원본: https://hosungseo.github.io/korea100/
 - 원본 저장소: https://github.com/hosungseo/korea100
 - 원본 커밋: `e9161bd3b2fe3121d2de9823a61d8a9bf6765205`
-- 편집일: 2026-10-01 / 버전: 1.1.0
+- 편집일: 2026-10-01 / 버전: 2.0.0
 - 수록: 직접 소관 6개 + 공동·연계 3개, 총 69개 업무단계
 - 저장소: `roknnaoms-hub/defense-institution-map`
 - 서비스 주소: https://roknnaoms-hub.github.io/defense-institution-map/
@@ -22,9 +22,24 @@
 
 관심 제도는 브라우저에 저장됩니다. 실시간 입찰·사업진도·신청접수 기능은 없습니다. 지도상의 분류와 관련 제도 링크는 업무 이해를 위한 편집이며 법정 선후행 의무를 의미하지 않습니다.
 
+## v2.0 온톨로지·국방 AI 기능
+
+- 8개 유형의 270개 지식 개체와 523개 관계. ID·참조·관계의 정의역/치역·근거 출처를 빌드 단계에서 검증합니다.
+- 기관·제도·사업/프로그램·프로세스·규정·산출물·점검사항·내 관리사업을 연결합니다.
+- AI 핵심 / AI 전체 / 9개 제도 개요 / 전체 개체 탐색, 검색·유형·근거 필터, 1~2단계 이웃 확장, 확대·이동, 키보드/텍스트 탐색, 개체별 주소를 제공합니다. 전체 검색은 한 화면에 최대 60개씩 표시하며 전체 데이터는 내보낼 수 있습니다.
+- **국방 AI 하이라이트**: AX-Sprint 국방, 국방빅데이터 선도사업, 신속시범사업의 AI 적용, 방산혁신기업100의 AI 분야, 국방 지능형 플랫폼 추진 근거를 구분합니다. 이는 동일한 성격의 실제 집행사업 5건을 집계한 것이 아닙니다. 개별 과제 선정·계약·운영 현황은 수록하지 않습니다.
+- **경로 구분**: 8단계 공통 관리모형은 실무 제안입니다. 신속시범사업의 공식 안내 5단계와 분리하며, 후속 소요·양산이 자동 확정된 것으로 표시하지 않습니다.
+- **핵심 규정 4개**: 국방데이터·인공지능업무 훈령, 국방데이터 관리 훈령, 신속시범사업 업무관리 지침, 국방부 직제 시행규칙. 공고의 개별 RFP·첨부 규정 전체를 재검증한 것은 아닙니다.
+- **내 관리사업**: 사업경로·단계·상태·담당 역할·검토 메모·5개 점검항목을 이 브라우저에 저장합니다. 추가·수정·삭제·JSON 백업/복원을 지원하며 서버 동기화는 없습니다. 최대 50개, 복원 파일 최대 200 KB. 중복 ID·잘못된 파일은 기존 기록을 덮어쓰지 않습니다. 공유 기기·같은 GitHub Pages 출처의 다른 코드로부터 격리되는 비밀 보관함이 아니므로 비밀·개인정보를 입력하지 마십시오.
+- **JSON-LD**: OWL 클래스·객체 속성과 RDF 진술별 출처를 내보냅니다. 복수 정의역/치역은 `owl:unionOf`로 표현하며, 관계는 `rdf:Statement`로 재구체화해 제안 관계가 확정된 사실로 자동 단언되지 않게 합니다. 관계별 `dm:evidenceLevel` 및 `prov:wasDerivedFrom`를 포함합니다. 자동 OWL 추론·법률 적합성 판정·실시간 규정 갱신 기능은 아닙니다.
+
+근거 수준은 `source`(공식 공개 근거 확인), `original`(기존 제도 원본), `model`(관리모형·적용 검토 제안), `user`(내 입력)로 구분합니다. 공식 근거로 확인된 개체라고 해서 연결된 모든 제안 관계까지 공식 절차가 되는 것은 아닙니다. 화면과 관계별 상세에서 수준을 각각 확인하십시오.
+
+공식 자료의 URL·기준일·2026-10-01 확인 범위와 한계는 `data/ontology.json`의 `sources` 및 화면의 **온톨로지 구조** 탭에 수록했습니다. 법령 원문은 국가법령정보센터, 공고·안내는 국방부·방위사업청 자료로 연결합니다.
+
 ## 비용·보안
 
-공개 GitHub Pages에서 제공하는 정적 사이트입니다. 사이트에는 MCP 서버, 유료 AI API, 결제 기능, 서버, 데이터베이스, 방문자 분석기가 없습니다. 열람·검색·비교·다운로드는 브라우저에서 수행합니다. 관심 제도 ID만 브라우저에 저장되며 외부로 전송하지 않습니다. GitHub의 호스팅 로그는 별도입니다.
+공개 GitHub Pages에서 제공하는 정적 사이트입니다. 사이트에는 MCP 서버, 유료 AI API, 결제 기능, 서버, 데이터베이스, 방문자 분석기가 없습니다. 열람·검색·비교·다운로드는 브라우저에서 수행합니다. 관심 제도와 사용자가 입력한 관리사업은 현재 브라우저에만 저장되며 외부로 전송하지 않습니다. GitHub의 호스팅 로그는 별도입니다.
 
 v1.1에서는 해시 기반 콘텐츠 보안 정책(CSP)으로 승인된 스크립트·스타일만 허용하고 네트워크 API 호출·폼 전송·외부 프레임을 차단했습니다. HTTPS 링크 허용 목록, HTML 이스케이프, CSV 수식 무력화, 잘못된 주소·저장값 처리, 링크 복사 시 쿼리 제거를 적용했습니다.
 
@@ -53,8 +68,8 @@ v1.1에서는 해시 기반 콘텐츠 보안 정책(CSP)으로 승인된 스크�
 
 이 저장소는 Settings → Pages → Deploy from a branch → `main` / `(root)` 설정으로 운영합니다.
 
-1. `data/institutions.json` 또는 `template.html`을 수정합니다.
-2. `python tools/build.py`로 `index.html`을 재생성하고 검증합니다.
+1. 기존 제도는 `data/institutions.json`, AI 근거·구조는 `tools/build_ontology.py`, 화면은 `template.html`과 `ui/ontology.*`를 수정합니다.
+2. `python tools/build_ontology.py`와 `python tools/build.py`로 `index.html`을 재생성하고 검증합니다.
 3. 변경 파일을 `main`에 올리면 GitHub Pages가 자동으로 다시 배포합니다.
 4. Actions의 `pages build and deployment` 결과와 공개 서비스 주소를 확인합니다.
 
@@ -62,11 +77,11 @@ v1.1에서는 해시 기반 콘텐츠 보안 정책(CSP)으로 승인된 스크�
 
 ## 편집과 재생성
 
-`data/institutions.json`을 수정한 후 `python tools/build.py`를 실행하면 단일 파일 `index.html`이 생성됩니다. UI 코드는 `template.html`에 있습니다.
+`data/institutions.json`을 수정한 후 `python tools/build.py`를 실행하면 단일 파일 `index.html`이 생성됩니다. 기존 UI는 `template.html`, 온톨로지 UI는 `ui/ontology.js`·`ui/ontology.css`에 있습니다. `tools/build_ontology.py`가 기존 제도와 공개 AI 근거를 `data/ontology.json`으로 연결합니다. JSON 파일의 직접 변경은 재생성 시 덮어쓰므로 AI 근거 수정은 생성기를 편집하십시오.
 
 `tools/prepare_data.py`는 상위 경로의 `reference-repo`에 있는 원본 저장소에서 최초 데이터를 추출하는 스크립트입니다. 일반 수정 시에는 실행할 필요가 없습니다. 이를 실행하면 편집한 데이터가 다시 생성되므로 먼저 변경분을 보관하십시오.
 
-검증: Node.js와 Playwright(Chromium 설치)가 있는 환경에서 `node tools/verify.cjs`를 실행합니다.
+검증: `python tools/test_build.py`, `node tools/verify.cjs`, `node tools/security_verify.cjs`, `node tools/ontology_verify.cjs`. Node 시험에는 Playwright와 Chromium이 필요합니다. `CHROMIUM_PATH`로 실행 파일을 지정할 수 있습니다.
 
 ## 출처·라이선스
 

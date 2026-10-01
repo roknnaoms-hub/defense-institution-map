@@ -36,7 +36,7 @@ Pages에 있는 대시보드는 ChatGPT의 GitHub 연결을 계속 실행하지 
 | 개인정보 최소화 | 외부 링크는 이미 `noopener noreferrer` 적용 | 문서 전체 `no-referrer`, 링크 복사 시 쿼리 제거. 과대·잘못된 관심 제도 저장값 무시 |
 | 개발 중 비밀정보 혼입 | 비밀파일 제외 규칙 부족 | `.env`·개인키 파일 제외 규칙 추가. 점검 소스에서 알려진 API 토큰·개인키 형식 미발견 |
 
-주소 허용 목록: `github.com`, `hosungseo.github.io`, `law.go.kr`, `www.law.go.kr`, `www.mnd.go.kr`, `www.dapa.go.kr`, `www.d2b.go.kr`. 사이트 운영자가 새 공식 출처를 추가할 때에는 빌드와 UI의 목록을 함께 검토해야 합니다. 허용 목록은 해당 도메인의 모든 콘텐츠가 항상 안전함을 보증하지 않습니다.
+주소 허용 목록: `github.com`, `hosungseo.github.io`, `law.go.kr`, `www.law.go.kr`, `www.mnd.go.kr`, `mnd.go.kr`, `www.dapa.go.kr`, `dapa.go.kr`, `www.d2b.go.kr`. 사이트 운영자가 새 공식 출처를 추가할 때에는 빌드와 UI의 목록을 함께 검토해야 합니다. 허용 목록은 해당 도메인의 모든 콘텐츠가 항상 안전함을 보증하지 않습니다.
 
 ## 검증 결과
 
@@ -53,7 +53,7 @@ Pages에 있는 대시보드는 ChatGPT의 GitHub 연결을 계속 실행하지 
 
 - 개인 계정의 결제 한도·자동충전·청구 내역, GitHub 로그인 보안·연결 앱 범위·분기 보호 설정은 현재 연결 도구로 검사·변경하지 않았습니다. 이 보고서는 계정 전체 감사가 아닙니다.
 - HTTPS 및 HSTS 응답은 확인했습니다. 그러나 기존 응답에는 CSP HTTP 헤더·`X-Frame-Options`·`Permissions-Policy`가 없습니다. 이번 변경은 HTML meta CSP로 적용합니다. `frame-ancestors`는 meta에서 지원되지 않으므로 다른 사이트가 이 페이지를 iframe에 넣는 행위를 완전히 차단했다고 주장하지 않습니다. 필요한 경우 응답 헤더를 제어할 수 있는 호스팅에서 별도로 적용해야 합니다.
-- 같은 `roknnaoms-hub.github.io` 아래 다른 프로젝트는 브라우저 관점에서 같은 출처일 수 있습니다. 관심 제도 ID 외에 비밀번호·토큰·개인정보를 저장해서는 안 됩니다.
+- 같은 `roknnaoms-hub.github.io` 아래 다른 프로젝트는 브라우저 관점에서 같은 출처일 수 있습니다. v2.0의 관리사업 기록도 같은 출처의 코드에서 접근할 수 있습니다. 비밀번호·토큰·비밀자료·개인정보를 저장해서는 안 됩니다.
 - CSP는 방어 수단이며 저장소 쓰기 권한을 탈취한 공격자의 코드·정책 동시 변경을 막지 못합니다. 비밀 패턴 검색도 모든 비밀정보를 탐지하지 못합니다.
 - 코드상 분석기는 없지만 GitHub는 보안 목적으로 방문자의 IP를 호스팅 로그에 기록할 수 있습니다. 브라우저 확장·운영체제·통신 요금은 점검 범위 밖입니다.
 - 법령 내용의 현행성 전수검증은 별도이며 기존 자료 기준일과 제한을 유지합니다.
@@ -64,3 +64,11 @@ Pages에 있는 대시보드는 ChatGPT의 GitHub 연결을 계속 실행하지 
 - GitHub Actions 비용·표준 Pages 실행 무료·대형 실행기 과금: https://docs.github.com/en/billing/concepts/product-billing/github-actions
 - GitHub Pages 용량·트래픽 등 운영 제한: https://docs.github.com/en/pages/getting-started-with-github-pages/github-pages-limits
 - CSP3 실행·리소스 제한 및 meta의 `frame-ancestors` 제한: https://www.w3.org/TR/CSP3/
+
+## v2.0 기능 확장 시 재점검 (2026-10-01)
+
+온톨로지와 SVG 그래프는 단일 HTML에 포함됩니다. 그래프 라이브러리·외부 CDN·AI API·MCP 런타임·분석기·서버 데이터베이스를 추가하지 않았습니다. 기존 CSP의 네트워크 API 호출 차단, 스크립트/스타일 해시, 링크 검증을 유지합니다. 출처 링크에 쓰는 공식 국방부·방위사업청의 비-www 호스트만 허용 목록에 추가했습니다.
+
+새 관리사업은 `defense-ontology-projects-v2` 브라우저 저장소에만 저장합니다. 서버로 보내지 않습니다. 입력은 길이를 제한하고 출력은 HTML 이스케이프합니다. 복원은 200 KB·50개 제한, ID·필드형식·사업/단계/상태 허용값을 검사하고 알려진 필드만 새 객체로 구성합니다. 잘못된 입력과 중복 ID는 거부하여 현재 기록을 보존합니다. 비밀 저장소나 접근권한이 있는 공동 사업관리 시스템을 제공하는 기능은 아닙니다.
+
+`tools/ontology_verify.cjs`에서 관리사업 입력의 XSS 방지·저장/복원 무결성, 그래프·JSON-LD 기능, 정상 사용 중 외부 요청과 CSP 위반 0건을 확인했습니다. 기존 `tools/security_verify.cjs`의 통신·스크립트 차단 시험도 통과했습니다. 계정 전체 과금 설정이나 외부 서비스 청구를 추가 감사한 결과로 해석해서는 안 됩니다.

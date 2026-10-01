@@ -9,7 +9,7 @@ from urllib.parse import urlsplit
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 ALLOWED_HOSTS = frozenset({
     'github.com', 'hosungseo.github.io', 'law.go.kr', 'www.law.go.kr',
-    'www.mnd.go.kr', 'www.dapa.go.kr', 'www.d2b.go.kr',
+    'www.mnd.go.kr', 'mnd.go.kr', 'www.dapa.go.kr', 'dapa.go.kr', 'www.d2b.go.kr',
 })
 
 
@@ -47,6 +47,38 @@ def validate_data(data):
         raise ValueError('Related institution does not exist')
 
 
+def validate_ontology(graph):
+    types = {t['id'] for t in graph['types']}
+    nodes = {n['id']: n for n in graph['nodes']}
+    sources = {s['id'] for s in graph['sources']}
+    relations = {r['id']: r for r in graph['relations']}
+    if len(nodes) != len(graph['nodes']):
+        raise ValueError('Duplicate ontology node')
+    if len({e['id'] for e in graph['edges']}) != len(graph['edges']):
+        raise ValueError('Duplicate ontology edge')
+    for source in graph['sources']:
+        validate_url(source['url'])
+    for node in graph['nodes']:
+        if not re.fullmatch(r'[A-Za-z0-9_-]{1,100}', node['id']) or node['type'] not in types:
+            raise ValueError('Invalid ontology node')
+        if node.get('url'):
+            validate_url(node['url'])
+    for item in graph['nodes'] + graph['edges']:
+        if item['level'] not in ('source', 'original', 'model') or not set(item['sources']) <= sources:
+            raise ValueError('Invalid provenance')
+        if item['level'] in ('source', 'original') and not item['sources']:
+            raise ValueError('Evidence source missing')
+    for edge in graph['edges']:
+        if edge['source'] not in nodes or edge['target'] not in nodes or edge['predicate'] not in relations:
+            raise ValueError('Unresolved ontology edge')
+        rel = relations[edge['predicate']]
+        if nodes[edge['source']]['type'] not in rel['domain'] or nodes[edge['target']]['type'] not in rel['range']:
+            raise ValueError('Ontology domain/range mismatch')
+    for route in graph['routes']:
+        if any(n not in nodes or nodes[n]['type'] != 'Process' for n in route['nodes']):
+            raise ValueError('Invalid route stage')
+
+
 def embedded_json(value):
     text = json.dumps(value, ensure_ascii=False, separators=(',', ':'))
     for char, escape in [('<', '\\u003c'), ('>', '\\u003e'), ('&', '\\u0026'),
@@ -62,15 +94,20 @@ def csp_hash(text):
 def build():
     data = json.loads((ROOT / 'data/institutions.json').read_text(encoding='utf-8'))
     validate_data(data)
+    ontology = json.loads((ROOT / 'data/ontology.json').read_text(encoding='utf-8'))
+    validate_ontology(ontology)
     html = (ROOT / 'template.html').read_text(encoding='utf-8')
     replacements = {
         '__DATA__': embedded_json(data),
+        '__ONTOLOGY_DATA__': embedded_json(ontology),
+        '__ONTOLOGY_CSS__': (ROOT / 'ui/ontology.css').read_text(encoding='utf-8'),
+        '__ONTOLOGY_JS__': (ROOT / 'ui/ontology.js').read_text(encoding='utf-8'),
         '__LICENSE__': (ROOT / 'LICENSE').read_text(encoding='utf-8'),
         '__FONT__': base64.b64encode((ROOT / 'data/font-subset.woff').read_bytes()).decode(),
         '__FONT_LICENSE__': (ROOT / 'FONT-LICENSE.txt').read_text(encoding='utf-8'),
     }
     # One pass: data containing placeholder-like text must stay data.
-    html = re.sub(r'__(?:DATA|LICENSE|FONT|FONT_LICENSE)__', lambda m: replacements[m[0]], html)
+    html = re.sub(r'__(?:DATA|LICENSE|FONT|FONT_LICENSE|ONTOLOGY_DATA|ONTOLOGY_CSS|ONTOLOGY_JS)__', lambda m: replacements[m[0]], html)
     scripts = re.findall(r'<script>([\s\S]*?)</script>', html)
     styles = re.findall(r'<style>([\s\S]*?)</style>', html)
     if len(scripts) != 1 or len(styles) != 1:
