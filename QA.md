@@ -60,3 +60,7 @@ Node 시험에는 Playwright 및 Chromium이 필요합니다. 별도 Chromium �
 - 재현: `python tools/build_ontology.py`, `python tools/build.py`, 기존 검증 명령과 `node tools/ontology_verify.cjs`.
 
 법령·공고는 출처별 확인 범위에 한정합니다. 전문 조문·RFP 전수대조, 실제 사업의 선정·계약·진도 검증, 자동 추론은 수행하지 않습니다.
+
+### v2.0 공개 배포 확인
+
+2026-10-01 GitHub Pages 자동 배포가 성공했습니다. 공개 주소의 HTTP 200 응답과 로컬 검증 파일의 SHA-256 일치를 확인했습니다. 기존 제도 상세창에서 그래프로 이동할 때 개체 주소를 유지하도록 보정하고 회귀 시험에 추가했습니다.
